@@ -13,5 +13,8 @@
   "scripts": {
     "format": "node node_modules/prettier/bin-prettier.js --write */*.js",
     "test": "node_modules/ava/cli.js"
+  },
+  "dependencies": {
+    "lodash": "^4.17.20"
   }
 }
