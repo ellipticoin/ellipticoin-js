@@ -1,0 +1,17 @@
+{
+  "name": "ellipticoin",
+  "version": "0.0.2",
+  "description": "Tools an utilities for interacting with the Ellipticoin protocol",
+  "main": "index.js",
+  "repository": "http://github.com/ellipticoin/js-ellipticoin",
+  "author": "Mason Fischer <mason@kissr.co>",
+  "license": "MIT",
+  "devDependencies": {
+    "ava": "^3.14.0",
+    "prettier": "^2.2.1"
+  },
+  "scripts": {
+    "format": "node node_modules/prettier/bin-prettier.js --write */*.js",
+    "test": "node_modules/ava/cli.js"
+  }
+}
