@@ -1,8 +1,8 @@
 {
   "name": "ellipticoin",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Tools an utilities for interacting with the Ellipticoin protocol",
-  "main": "index.js",
+  "main": "src/index.js",
   "repository": "http://github.com/ellipticoin/js-ellipticoin",
   "author": "Mason Fischer <mason@kissr.co>",
   "license": "MIT",
