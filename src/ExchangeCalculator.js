@@ -2,39 +2,42 @@ const { DEFAULT_FEE, BASE_FACTOR } = require("./constants");
 const { find } = require("lodash");
 
 module.exports = class ExchangeCalculator {
-  constructor({ fee = DEFAULT_FEE, liquidityTokens = [], baseTokenId }) {
+  constructor({ fee = DEFAULT_FEE, liquidityTokens = [], baseTokenAddress }) {
     this.fee = fee;
     this.liquidityTokens = liquidityTokens;
-    this.baseTokenId = baseTokenId;
+    this.baseTokenAddress = baseTokenAddress;
   }
 
-  getOutputAmount(inputAmount, inputTokenId, outputTokenId) {
-    const baseTokenAmount = this.baseTokenAmount(inputAmount, inputTokenId);
-    return this.tokenAmount(baseTokenAmount, outputTokenId);
+  getOutputAmount(inputAmount, inputTokenAddress, outputTokenAddress) {
+    const baseTokenAmount = this.baseTokenAmount(
+      inputAmount,
+      inputTokenAddress
+    );
+    return this.tokenAmount(baseTokenAmount, outputTokenAddress);
   }
 
-  getFee(inputAmount, inputTokenId, outputTokenId) {
+  getFee(inputAmount, inputTokenAddress, outputTokenAddress) {
     let inputFee;
     let baseTokenAmount;
-    if (inputTokenId == this.baseTokenId) {
+    if (inputTokenAddress == this.baseTokenAddress) {
       inputFee = 0n;
       baseTokenAmount = inputAmount;
     } else {
       inputFee = (inputAmount * this.fee) / BASE_FACTOR;
-      baseTokenAmount = this.baseTokenAmount(inputAmount, inputTokenId);
+      baseTokenAmount = this.baseTokenAmount(inputAmount, inputTokenAddress);
       if (!baseTokenAmount) return;
     }
     let outputFee;
-    if (outputTokenId == this.baseTokenId) {
+    if (outputTokenAddress == this.baseTokenAddress) {
       outputFee = 0n;
     } else {
       const outputFeeInBaseToken = (baseTokenAmount * this.fee) / BASE_FACTOR;
-      if (inputTokenId == this.baseTokenId) {
+      if (inputTokenAddress == this.baseTokenAddress) {
         outputFee = outputFeeInBaseToken;
       } else {
         const { poolSupplyOfBaseToken, poolSupplyOfToken } = find(
           this.liquidityTokens,
-          ["id", inputTokenId]
+          ["tokenAddress", inputTokenAddress]
         );
         if (poolSupplyOfToken === 0n) return;
         outputFee =
@@ -44,34 +47,43 @@ module.exports = class ExchangeCalculator {
     return inputFee + outputFee;
   }
 
-  getExchangeRate(inputAmount, inputTokenId, outputTokenId) {
-    if (inputTokenId == this.baseTokenId) {
+  getExchangeRate(inputAmount, inputTokenAddress, outputTokenAddress) {
+    if (inputTokenAddress == this.baseTokenAddress) {
       return (
-        ((inputAmount - this.getFee(inputAmount, inputTokenId, outputTokenId)) /
-          this.getOutputAmount(inputAmount, inputTokenId, outputTokenId)) *
+        ((inputAmount -
+          this.getFee(inputAmount, inputTokenAddress, outputTokenAddress)) /
+          this.getOutputAmount(
+            inputAmount,
+            inputTokenAddress,
+            outputTokenAddress
+          )) *
         BASE_FACTOR
       );
     } else {
       const { poolSupplyOfBaseToken, poolSupplyOfToken } = find(
         this.liquidityTokens,
-        ["id", inputTokenId]
+        ["tokenAddress", inputTokenAddress]
       );
       return (
         ((poolSupplyOfBaseToken *
           (inputAmount -
-            this.getFee(inputAmount, inputTokenId, outputTokenId))) /
+            this.getFee(inputAmount, inputTokenAddress, outputTokenAddress))) /
           poolSupplyOfToken /
-          this.getOutputAmount(inputAmount, inputTokenId, outputTokenId)) *
+          this.getOutputAmount(
+            inputAmount,
+            inputTokenAddress,
+            outputTokenAddress
+          )) *
         BASE_FACTOR
       );
     }
   }
 
-  baseTokenAmount(inputAmount, inputTokenId) {
-    if (inputTokenId == this.baseTokenId) return inputAmount;
+  baseTokenAmount(inputAmount, inputTokenAddress) {
+    if (inputTokenAddress == this.baseTokenAddress) return inputAmount;
     const { poolSupplyOfToken, poolSupplyOfBaseToken } = find(
       this.liquidityTokens,
-      ["id", inputTokenId]
+      ["tokenAddress", inputTokenAddress]
     );
     return this.calculateOutputAmount(
       poolSupplyOfToken,
@@ -80,11 +92,11 @@ module.exports = class ExchangeCalculator {
     );
   }
 
-  tokenAmount(baseTokenAmount, outputTokenId) {
-    if (outputTokenId == this.baseTokenId) return baseTokenAmount;
+  tokenAmount(baseTokenAmount, outputTokenAddress) {
+    if (outputTokenAddress == this.baseTokenAddress) return baseTokenAmount;
     const { poolSupplyOfBaseToken, poolSupplyOfToken } = find(
       this.liquidityTokens,
-      ["id", outputTokenId]
+      ["tokenAddress", outputTokenAddress]
     );
     return this.calculateOutputAmount(
       poolSupplyOfBaseToken,
