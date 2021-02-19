@@ -22,11 +22,18 @@ function formatBigInt(n) {
   return `${numberWithCommas(number)}.${decimal}`;
 }
 
+function formatPercentage(n) {
+    return (Number(n * 100n) / Number(BASE_FACTOR))
+    .toFixed(4)
+    .toString() + "%";
+}
+
 function numberWithCommas(n) {
   return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 module.exports = {
+  formatPercentage,
   encodeAddress,
-  formatToken,
   formatBigInt,
+  formatToken,
 };
