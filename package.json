@@ -1,6 +1,6 @@
 {
   "name": "ellipticoin",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Tools an utilities for interacting with the Ellipticoin protocol",
   "main": "src/index.js",
   "repository": "http://github.com/ellipticoin/js-ellipticoin",
