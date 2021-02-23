@@ -20,7 +20,6 @@ module.exports = class Trade {
   }
 
   toSignatureString () {
-      console.log(this)
       return `Trade ${formatBigInt(this.inputAmount)} ${formatToken(this.inputToken)} for at least ${formatBigInt(this.minimumOutputAmount)} ${formatToken(this.outputToken)}`;
   }
 }
