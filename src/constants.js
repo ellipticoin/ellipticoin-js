@@ -20,8 +20,7 @@ const BTC = Buffer.from(
   "hex"
 ).toString("base64");
 const USD = Buffer.from(
-  "6b175474e89094c44da98b954eedeac495271d0f",
-  // "5596ac7380a934802e782e0ff6471d642e488674",
+  "5d3a536E4D6DbD6114cc1Ead35777bAB948E3643",
   "hex"
 ).toString("base64");
 const TICKERS = {
