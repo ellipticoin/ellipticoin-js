@@ -4,7 +4,7 @@ export function blockReward(blockNumber, token) {
   const era = Math.round(Number(blockNumber) / Number(BLOCKS_PER_ERA));
 
   if ([BTC, ETH].includes(token)) {
-    return (BASE_FACTOR * 128n * 10n ** 6) / 2n ** era / 10n ** 8 / 2n;
+    return BigInt((Number(BASE_FACTOR) * 128 * 10 ** 6) / 2 ** era / 10 ** 8 / 2);
   } else {
     return 0n;
   }
