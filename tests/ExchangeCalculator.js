@@ -6,12 +6,12 @@ test("ExchangeCalculator#getOutputAmount", (t) => {
   const exchangeRateCalculator = new ExchangeCalculator({
     liquidityTokens: [
       {
-        id: "APPLES",
+        tokenAddress: "APPLES",
         poolSupplyOfToken: 100n * BASE_FACTOR,
         poolSupplyOfBaseToken: 100n * BASE_FACTOR,
       },
       {
-        id: "BANANAS",
+        tokenAddress: "BANANAS",
         poolSupplyOfToken: 100n * BASE_FACTOR,
         poolSupplyOfBaseToken: 100n * BASE_FACTOR,
       },
@@ -33,12 +33,12 @@ test("ExchangeCalculator#getFee", (t) => {
   const exchangeRateCalculator = new ExchangeCalculator({
     liquidityTokens: [
       {
-        id: "APPLES",
+        tokenAddress: "APPLES",
         poolSupplyOfToken: 100n * BASE_FACTOR,
         poolSupplyOfBaseToken: 100n * BASE_FACTOR,
       },
       {
-        id: "BANANAS",
+        tokenAddress: "BANANAS",
         poolSupplyOfToken: 100n * BASE_FACTOR,
         poolSupplyOfBaseToken: 100n * BASE_FACTOR,
       },
@@ -54,12 +54,12 @@ test("ExchangeCalculator#getExchangeRate", (t) => {
   const exchangeRateCalculator = new ExchangeCalculator({
     liquidityTokens: [
       {
-        id: "APPLES",
+        tokenAddress: "APPLES",
         poolSupplyOfToken: 100n * BASE_FACTOR,
         poolSupplyOfBaseToken: 100n * BASE_FACTOR,
       },
       {
-        id: "BANANAS",
+        tokenAddress: "BANANAS",
         poolSupplyOfToken: 100n * BASE_FACTOR,
         poolSupplyOfBaseToken: 100n * BASE_FACTOR,
       },

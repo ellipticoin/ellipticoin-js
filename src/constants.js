@@ -7,8 +7,8 @@ const LAST_BLOCK_OF_FIRST_ERA =
   BLOCKS_PER_ERA * FIRST_ERA_ISSUANCE_PER_BLOCK -
   PROTOTYPE_ISSUANCE / FIRST_ERA_ISSUANCE_PER_BLOCK;
 const DEFAULT_FEE = 3000n;
-const ELC = Buffer.from(
-  "0000000000000000000000000000000000000001",
+const MS = Buffer.from(
+  "0000000000000000000000000000000000000002",
   "hex"
 ).toString("base64");
 const ETH = Buffer.from(
@@ -24,7 +24,7 @@ const USD = Buffer.from(
   "hex"
 ).toString("base64");
 const TICKERS = {
-  [ELC]: "ELC",
+  [MS]: "MS",
   [ETH]: "ETH",
   [BTC]: "BTC",
   [USD]: "USD",
@@ -32,7 +32,7 @@ const TICKERS = {
 
 module.exports = {
   BTC,
-  ELC,
+  MS,
   ETH,
   BASE_FACTOR,
   BLOCKS_PER_ERA,

@@ -3,7 +3,7 @@ const {TICKERS} = require("../constants");
 const {formatBigInt, formatToken, encodeAddress} = require("../helpers");
 const { arrayify, hexlify, getAddress } = ethers.utils;
 
-module.exports = class Transfer {
+module.exports = class Pay {
   constructor(amount, token, recipient) {
     this.amount = amount
     this.token = token
@@ -12,12 +12,12 @@ module.exports = class Transfer {
 
   encodeCBOR (encoder) {
     return encoder.pushAny({
-        Transfer: [this.amount, encodeAddress(this.token), Array.from(arrayify(this.recipient))]
+        Pay: [Array.from(arrayify(this.recipient)), this.amount, encodeAddress(this.token)]
 
     })
   }
 
   toSignatureString () {
-      return `Transfer ${formatBigInt(this.amount)} ${formatToken(this.token)} to ${getAddress(this.recipient)}`;
+      return `Pay ${getAddress(this.recipient)} ${formatBigInt(this.amount)} ${formatToken(this.token)}`;
   }
 }
