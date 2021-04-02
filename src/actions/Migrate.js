@@ -17,6 +17,6 @@ module.exports = class Migrate {
  }
 
   toSignatureString () {
-      return `Migrate ${base64url(this.legacyAddress)} Signature: ${base64url(this.legacySignature)}`;
+      return `Migrate\nLegacy Address: ${base64url(this.legacyAddress)}\nLegacy Signature: ${base64url(this.legacySignature)}`;
   }
 }
