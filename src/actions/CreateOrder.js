@@ -4,7 +4,7 @@ const base64url = require("base64url");
 const {formatBigInt, formatToken, encodeAddress} = require("../helpers");
 
 module.exports = class CreateOrder {
-  constructor(type, token, amount, price) {
+  constructor(type, amount, token, price) {
     this.type = type
     this.amount = amount
     this.token = token

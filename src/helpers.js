@@ -1,12 +1,18 @@
 const { ethers } = require("ethers");
+const { capitalize } = require("lodash");
 const { BASE_FACTOR, TICKERS, BTC } = require("../src/constants");
 const { arrayify, hexlify, getAddress, isAddress } = ethers.utils;
 
 const ACTIONS = [
-    { 
-    f: "Pay", 
+  {
+    f: "Pay",
     regexp: /Pay (.*) (.*) (.*)/,
-    types: ["address", "u64", "address"]
+    types: ["address", "u64", "address"],
+  },
+  {
+    f: "CreateOrder",
+
+    types: ["OrderType", "u64", "address", "u64"],
   },
 ];
 function formatToken(token) {
@@ -37,33 +43,34 @@ function encodeFormattedAddress(address) {
 }
 
 function encodeFormattedBigInt(bigInt) {
-  console.log(bigInt)
-  return isNaN(parseInt(bigInt)) ? null: BigInt(parseInt(bigInt) * Number(BASE_FACTOR));
+  const number = parseInt(bigInt.replace(",", ""));
+
+  return isNaN(number) ? null : BigInt(number * Number(BASE_FACTOR));
 }
 
 function encodeActions(string) {
-  if (string === "") return []
+  if (string === "") return [];
   const actions = string.split("\n").map(encodeAction);
-  if (actions.some((action) => action === null)) return null
-  return actions
+  if (actions.some((action) => action === null)) return null;
+  return actions;
 }
 
 function encodeAction(string) {
-  const action = ACTIONS.find((actions) => actions.regexp.exec(string))
-  if(!action) return null
-  const arguments = action.regexp.exec(string).slice(1)
+  const action = ACTIONS.find((actions) => actions.regexp.exec(string));
+  if (!action) return null;
+  const arguments = action.regexp.exec(string).slice(1);
 
   return {
-    [action.f]: arguments.map(
-      (argument, argumentIndex) => {
-        switch (action.types[argumentIndex]) {
-          case "address":
-            return encodeFormattedAddress(argument);
-          case "u64":
-            return encodeFormattedBigInt(argument);
-        }
+    [action.f]: arguments.map((argument, argumentIndex) => {
+      switch (action.types[argumentIndex]) {
+        case "address":
+          return encodeFormattedAddress(argument);
+        case "u64":
+          return encodeFormattedBigInt(argument);
+        case "OrderType":
+          return capitalize(argument);
       }
-    ),
+    }),
   };
 }
 

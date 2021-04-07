@@ -4,10 +4,10 @@ const {formatBigInt, formatToken, encodeAddress} = require("../helpers");
 const { arrayify, hexlify, getAddress } = ethers.utils;
 
 module.exports = class Pay {
-  constructor(amount, token, recipient) {
+  constructor(recipient, amount, token) {
+    this.recipient = recipient
     this.amount = amount
     this.token = token
-    this.recipient = recipient
   }
 
   encodeCBOR (encoder) {

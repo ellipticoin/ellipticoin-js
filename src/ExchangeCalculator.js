@@ -51,13 +51,9 @@ module.exports = class ExchangeCalculator {
     if (inputTokenAddress == this.baseTokenAddress) {
       return (
         ((inputAmount -
-          this.getFee(inputAmount, inputTokenAddress, outputTokenAddress)) /
-          this.getOutputAmount(
-            inputAmount,
-            inputTokenAddress,
-            outputTokenAddress
-          )) *
-        BASE_FACTOR
+          this.getFee(inputAmount, inputTokenAddress, outputTokenAddress)) *
+          BASE_FACTOR) /
+        this.getOutputAmount(inputAmount, inputTokenAddress, outputTokenAddress)
       );
     } else {
       const { poolSupplyOfBaseToken, poolSupplyOfToken } = find(

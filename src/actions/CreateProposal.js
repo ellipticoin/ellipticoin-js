@@ -12,8 +12,6 @@ module.exports = class CreateProposal {
   }
 
   encodeCBOR (encoder) {
-    console.log(this.actions)
-    console.log(encodeActions(this.actions))
     return encoder.pushAny({
         CreateProposal: [this.title, this.subtitle, this.content, encodeActions(this.actions)]
     })
