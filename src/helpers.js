@@ -11,7 +11,7 @@ const ACTIONS = [
   },
   {
     f: "CreateOrder",
-
+    regexp: /Create a limit order to (.*) (.*) (.*) for \$(.*) each/,
     types: ["OrderType", "u64", "address", "u64"],
   },
 ];
@@ -43,7 +43,7 @@ function encodeFormattedAddress(address) {
 }
 
 function encodeFormattedBigInt(bigInt) {
-  const number = parseInt(bigInt.replace(",", ""));
+  const number = parseFloat(bigInt.replace(",", ""));
 
   return isNaN(number) ? null : BigInt(number * Number(BASE_FACTOR));
 }

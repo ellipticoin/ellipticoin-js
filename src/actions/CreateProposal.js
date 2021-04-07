@@ -18,6 +18,7 @@ module.exports = class CreateProposal {
  }
 
   toSignatureString () {
+     console.log(this.actions)
       return `Create Proposal\nTitle: ${this.title}\nSubtitle: ${this.subtitle}\nContent: ${this.content}\nActions: ${this.actions}`;
   }
 }
