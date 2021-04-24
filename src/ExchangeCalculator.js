@@ -3,17 +3,16 @@ const { find } = require("lodash");
 
 module.exports = class ExchangeCalculator {
   constructor({ fee = DEFAULT_FEE, liquidityTokens = [], baseTokenAddress }) {
-    this.fee = fee;
+    this.FEE = fee;
     this.liquidityTokens = liquidityTokens;
     this.baseTokenAddress = baseTokenAddress;
   }
 
   getOutputAmount(inputAmount, inputTokenAddress, outputTokenAddress) {
-    const baseTokenAmount = this.baseTokenAmount(
-      inputAmount,
-      inputTokenAddress
-    );
-    return this.tokenAmount(baseTokenAmount, outputTokenAddress);
+    const baseTokenAmount = this.sell(inputAmount, inputTokenAddress);
+    console.log(`base token amount: ${baseTokenAmount}`)
+    console.log(`token amount: ${this.buy(baseTokenAmount, outputTokenAddress)}`)
+    return this.buy(baseTokenAmount, outputTokenAddress);
   }
 
   getFee(inputAmount, inputTokenAddress, outputTokenAddress) {
@@ -23,15 +22,15 @@ module.exports = class ExchangeCalculator {
       inputFee = 0n;
       baseTokenAmount = inputAmount;
     } else {
-      inputFee = (inputAmount * this.fee) / BASE_FACTOR;
-      baseTokenAmount = this.baseTokenAmount(inputAmount, inputTokenAddress);
+      inputFee = (inputAmount * this.FEE) / BASE_FACTOR;
+      baseTokenAmount = this.sell(inputAmount, inputTokenAddress);
       if (!baseTokenAmount) return;
     }
     let outputFee;
     if (outputTokenAddress == this.baseTokenAddress) {
       outputFee = 0n;
     } else {
-      const outputFeeInBaseToken = (baseTokenAmount * this.fee) / BASE_FACTOR;
+      const outputFeeInBaseToken = (baseTokenAmount * this.FEE) / BASE_FACTOR;
       if (inputTokenAddress == this.baseTokenAddress) {
         outputFee = outputFeeInBaseToken;
       } else {
@@ -75,7 +74,7 @@ module.exports = class ExchangeCalculator {
     }
   }
 
-  baseTokenAmount(inputAmount, inputTokenAddress) {
+  sell(inputAmount, inputTokenAddress) {
     if (inputTokenAddress == this.baseTokenAddress) return inputAmount;
     const { poolSupplyOfToken, poolSupplyOfBaseToken } = find(
       this.liquidityTokens,
@@ -84,20 +83,22 @@ module.exports = class ExchangeCalculator {
     return this.calculateOutputAmount(
       poolSupplyOfToken,
       poolSupplyOfBaseToken,
-      this.applyFee(inputAmount)
+      inputAmount - this.fee(inputAmount)
     );
   }
 
-  tokenAmount(baseTokenAmount, outputTokenAddress) {
+  buy(baseTokenAmount, outputTokenAddress) {
     if (outputTokenAddress == this.baseTokenAddress) return baseTokenAmount;
     const { poolSupplyOfBaseToken, poolSupplyOfToken } = find(
       this.liquidityTokens,
       ["tokenAddress", outputTokenAddress]
     );
+    console.log(`pool supply of token: ${poolSupplyOfToken}`)
+    console.log(`pool supply of base token: ${poolSupplyOfBaseToken}`)
     return this.calculateOutputAmount(
       poolSupplyOfBaseToken,
       poolSupplyOfToken,
-      this.applyFee(baseTokenAmount)
+      baseTokenAmount - this.fee(baseTokenAmount)
     );
   }
 
@@ -107,7 +108,8 @@ module.exports = class ExchangeCalculator {
     return outputSupply - newOutputSupply;
   }
 
-  applyFee(amount) {
-    return amount - (amount * this.fee) / BASE_FACTOR;
+  fee(amount) {
+    const fee = (amount * this.FEE) / BASE_FACTOR;
+    return fee === 0n ? 1n : fee;
   }
 };

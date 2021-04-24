@@ -28,6 +28,32 @@ test("ExchangeCalculator#getOutputAmount", (t) => {
   );
 });
 
+test("ExchangeCalculator#getOutputAmount for small amounts", (t) => {
+  const exchangeRateCalculator = new ExchangeCalculator({
+    liquidityTokens: [
+      {
+        tokenAddress: "APPLES",
+        poolSupplyOfToken: 107548n,
+        poolSupplyOfBaseToken: 317493391985n,
+      },
+      {
+        tokenAddress: "BANANAS",
+        poolSupplyOfToken: 1360361n,
+        poolSupplyOfBaseToken: 143369453579n,
+      },
+    ],
+    baseToken: "USD",
+  });
+  t.is(
+    exchangeRateCalculator.getOutputAmount(
+      172n,
+      "APPLES",
+      "BANANAS"
+    ),
+    4752n
+  );
+});
+
 test("ExchangeCalculator#getFee", (t) => {
   const BASE_FACTOR = 1000000n;
   const exchangeRateCalculator = new ExchangeCalculator({

@@ -14,6 +14,11 @@ const ACTIONS = [
     regexp: /Create a limit order to (.*) (.*) (.*) for \$(.*) each/,
     types: ["OrderType", "u64", "address", "u64"],
   },
+  {
+    f: "AddLiquidity",
+    regexp: /Add (.*) (.*) to the liquidity pool/,
+    types: ["u64", "address"],
+  },
 ];
 function formatToken(token) {
   return TICKERS[token] ? TICKERS[token] : formatAddress(token);

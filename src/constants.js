@@ -27,23 +27,29 @@ const USD = Buffer.from(
   "5d3a536E4D6DbD6114cc1Ead35777bAB948E3643",
   "hex"
 ).toString("base64");
+const DAI = Buffer.from(
+  "6b175474e89094c44da98b954eedeac495271d0f",
+  "hex"
+).toString("base64");
 const TICKERS = {
   [MS]: "MS",
+  [DAI]: "DAI",
   [ETH]: "ETH",
   [BTC]: "BTC",
   [USD]: "USD",
 };
 
 module.exports = {
-  BTC,
-  MS,
-  ETH,
-  DAO_ADDRESS,
   BASE_FACTOR,
   BLOCKS_PER_ERA,
+  BTC,
+  DAI,
+  DAO_ADDRESS,
   DEFAULT_FEE,
+  ETH,
   FIRST_ERA_ISSUANCE_PER_BLOCK,
   LAST_BLOCK_OF_FIRST_ERA,
+  MS,
   NUMBER_OF_ERAS,
   TICKERS,
   USD,

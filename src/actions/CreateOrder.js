@@ -18,7 +18,6 @@ module.exports = class CreateOrder {
  }
 
   toSignatureString () {
-      console.log(`Create a limit order to ${this.type.toLowerCase()} ${formatBigInt(this.amount)} ${formatToken(this.token)} for $ ${formatBigInt(this.price)} a piece`);
-      return `Create a limit order to ${this.type.toLowerCase()} ${formatBigInt(this.amount)} ${formatToken(this.token)} for $ ${formatBigInt(this.price)} a piece`;
+      return `Create a limit order to ${this.type.toLowerCase()} ${formatBigInt(this.amount)} ${formatToken(this.token)} for $${formatBigInt(this.price)} each`;
   }
 }

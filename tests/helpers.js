@@ -39,3 +39,19 @@ test("#encodeActions - Create Order", (t) => {
     ]
   );
 });
+
+test("#encodeActions - Add Liquidity", (t) => {
+  t.deepEqual(
+    encodeActions(
+      "Add 1.000000 MS to the liquidity pool"
+    ),
+    [
+      {
+        AddLiquidity: [
+          1000000n,
+          Array.from(Buffer.from(MS, "base64")),
+        ],
+      },
+    ]
+  );
+});
